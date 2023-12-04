@@ -53,9 +53,10 @@
         <ul>
           <li><a href="{{ url('/admin') }}">Home Admin</a></li>
           <li><a href="{{ url('/admin/listuser') }}">List User</a></li>
-          <li><a href="#">List Baker</a></li>
+          <li><a href="{{ url('/admin/listbaker') }}">List Baker</a></li>
           <li><a href="#">List Karyawan</a></li>
           <li><a href="#">List Penjualan</a></li>
+          <li><a href="{{ url('/admin/masterbaker') }}">Register Baker</a></li>
         </ul>
       </nav><!-- .navbar -->
 

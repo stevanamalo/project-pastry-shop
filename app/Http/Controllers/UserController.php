@@ -77,12 +77,38 @@ class UserController extends Controller
                     "email" => $request->emailReg,
                     "password" => $request->password,
                     "tgllahir" => $request->tgllahir,
-                    "saldo" => 0
+                    "saldo" => 0,
+                    "role" => "user"
                 ]);
 
                 return redirect()->route("login")->with('msg', "Berhasil Register");
             }
         }
+    }
+
+    public function registerakunbaker(Request $request)
+    {
+    // Validate the request data
+        $request->validate([
+            'usernameReg' => 'required|unique:user,username',
+            'emailReg' => 'required|email|unique:user,email',
+            'namaReg' => 'required',
+            'password' => 'required|min:3|confirmed',
+            'tgllahir' => 'required|date',
+        ]);
+
+        // Create a new user
+        User::create([
+            'username' => $request->usernameReg,
+            'nama' => $request->namaReg,
+            'email' => $request->emailReg,
+            'password' => $request->password, 
+            'tgllahir' => $request->tgllahir,
+            'saldo' => 0,
+            'role' => 'baker',
+        ]);
+
+        return redirect()->route('admin')->with('msg', 'Berhasil Register');
     }
 
     public function login(Request $request)
@@ -216,6 +242,20 @@ class UserController extends Controller
 
         return view("admin.listU", ["data" => $data, "jumlah" => $jumlah]);
     }
+
+    public function listBaker()
+    {
+        $data = $this->getDataAll();
+        $jumlah = count($data);
+
+        return view("admin.listB", ["data" => $data, "jumlah" => $jumlah]);
+    }
+
+    public function viewmasterbaker()
+    {
+        return view("admin.masterbaker");
+    }
+
 
 
     public function adminedituser($username)

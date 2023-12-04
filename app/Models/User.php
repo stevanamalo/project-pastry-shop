@@ -14,7 +14,7 @@ class User extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'username', 'nama', 'email', 'password', 'tgllahir', 'member','saldo'
+        'username', 'nama', 'email', 'password', 'tgllahir', 'member','saldo','role'
     ];
 
 

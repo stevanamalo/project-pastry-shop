@@ -62,7 +62,7 @@
             <tbody>
             @if ($jumlah > 0)
                         @foreach ($data as $user)
-                            @if ($user->role === 'user')
+                            @if ($user->role === 'baker')
                                 <tr>
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->nama }}</td>

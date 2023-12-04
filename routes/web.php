@@ -24,10 +24,15 @@ Route::post('/register', [PageController::class, 'register']);
 Route::get("/logout", [UserController::class, "logoutuser"]);
 Route::post("/registerakun",[UserController::class, "registerakun"]);
 Route::post('/loginuser', [UserController::class, "login"]);
+
 //untuk Admin
 Route::prefix("/admin")->name("admin")->group(function(){
     Route::view("/","admin.homeAdmin" );
     Route::get("/listuser", [UserController::class, "listUser"]);
+    Route::get("/listbaker", [UserController::class, "listBaker"]);
+    Route::match(['get', 'post'], "/registerakunbaker", [UserController::class, "registerakunbaker"])
+    ->name('registerakunbaker');
+    Route::get("/masterbaker", [UserController::class, "viewmasterbaker"]);
 });
 
 // Untuk User
