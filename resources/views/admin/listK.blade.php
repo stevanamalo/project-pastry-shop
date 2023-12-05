@@ -39,7 +39,7 @@
 
 
 
-        <h2>List Baker </h2>
+        <h2>List Karyawan </h2>
         <br><br>
 
         <table class="table table-hover" style="width: 90%;">
@@ -62,7 +62,7 @@
             <tbody>
             @if ($jumlah > 0)
                         @foreach ($data as $user)
-                            @if ($user->role === 'baker')
+                            @if ($user->role === 'karyawan')
                                 <tr>
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->nama }}</td>

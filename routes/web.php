@@ -30,9 +30,13 @@ Route::prefix("/admin")->name("admin")->group(function(){
     Route::view("/","admin.homeAdmin" );
     Route::get("/listuser", [UserController::class, "listUser"]);
     Route::get("/listbaker", [UserController::class, "listBaker"]);
+    Route::get("/listkaryawan", [UserController::class, "listKaryawan"]);
     Route::match(['get', 'post'], "/registerakunbaker", [UserController::class, "registerakunbaker"])
     ->name('registerakunbaker');
+    Route::match(['get', 'post'], "/registerakunkaryawan", [UserController::class, "registerakunkaryawan"])
+    ->name('registerakunkaryawan');
     Route::get("/masterbaker", [UserController::class, "viewmasterbaker"]);
+    Route::get("/masterkaryawan", [UserController::class, "viewmasterkaryawan"]);
 });
 
 // Untuk User

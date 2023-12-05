@@ -111,6 +111,31 @@ class UserController extends Controller
         return redirect()->route('admin')->with('msg', 'Berhasil Register');
     }
 
+    public function registerakunkaryawan(Request $request)
+    {
+    // Validate the request data
+        $request->validate([
+            'usernameReg' => 'required|unique:user,username',
+            'emailReg' => 'required|email|unique:user,email',
+            'namaReg' => 'required',
+            'password' => 'required|min:3|confirmed',
+            'tgllahir' => 'required|date',
+        ]);
+
+        // Create a new user
+        User::create([
+            'username' => $request->usernameReg,
+            'nama' => $request->namaReg,
+            'email' => $request->emailReg,
+            'password' => $request->password, 
+            'tgllahir' => $request->tgllahir,
+            'saldo' => 0,
+            'role' => 'karyawan',
+        ]);
+
+        return redirect()->route('admin')->with('msg', 'Berhasil Register');
+    }
+
     public function login(Request $request)
     {
         $listuser = User::all();
@@ -251,9 +276,22 @@ class UserController extends Controller
         return view("admin.listB", ["data" => $data, "jumlah" => $jumlah]);
     }
 
+    public function listKaryawan()
+    {
+        $data = $this->getDataAll();
+        $jumlah = count($data);
+
+        return view("admin.listK", ["data" => $data, "jumlah" => $jumlah]);
+    }
+
     public function viewmasterbaker()
     {
         return view("admin.masterbaker");
+    }
+
+    public function viewmasterkaryawan()
+    {
+        return view("admin.masterkaryawan");
     }
 
 
