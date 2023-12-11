@@ -18,11 +18,12 @@
           </li>
 
           <!-- Tambahkan baris berikut di dalam navbar -->
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" >
-                    Saldo Anda: {{ $user->saldo }}
-                </a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page">
+                Saldo Anda: Rp. {{ number_format($user->saldo, 0, ',', '.') }},-
+            </a>
+        </li>
+
             <li class="nav-item">
                 <button type="button" class="btn btn-outline-danger">
                     <a style="color: red;" href="{{url("/logout")}}" >Logout </a>
