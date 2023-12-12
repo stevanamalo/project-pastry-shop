@@ -51,3 +51,11 @@ Route::prefix("/user")->group(function(){
     Route::post("/topup", [UserController::class, "topup"]);
     Route::get("/topup", [UserController::class, "showTopupPage"])->name("topup");
 });
+
+Route::prefix("/baker")->group(function(){
+    Route::get("/",[UserController::class, 'tampilhomebaker'] );
+});
+
+Route::prefix("/karyawan")->group(function(){
+    Route::get("/",[UserController::class, 'tampilhomekaryawan'] );
+});

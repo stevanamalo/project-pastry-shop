@@ -44,6 +44,20 @@ class UserController extends Controller
         return view('user.homeUser', ['user' => $user]);
     }
 
+    public function tampilhomebaker(){
+        $username = Cookie::get('usernameyglogin');
+        $user = User::where('username', $username)->first();
+
+        return view('baker.homeBaker', ['user' => $user]);
+    }
+
+    public function tampilhomekaryawan(){
+        $username = Cookie::get('usernameyglogin');
+        $user = User::where('username', $username)->first();
+
+        return view('karyawan.homeKaryawan', ['user' => $user]);
+    }
+
     public function logoutuser(){
         Session::forget("userlog");
         Session::forget("adminlog");
@@ -164,19 +178,6 @@ class UserController extends Controller
 
         if ($user) {
             if ($user->password == $request->password) {
-
-                if ($user->role == 'baker') {
-                    // Redirect for baker role
-                    return redirect("/baker");
-                } elseif ($user->role == 'user') {
-                    // Redirect for user role
-                    return redirect("/user");
-                } elseif ($user->role == 'karyawan') {
-                    // Redirect for karyawan role
-                    return redirect("/karyawan");
-                } else {
-                    // Handle other roles if needed
-                }
     
                 if (isset($request->cbremember)) {
                     $userSession = new stdClass();
@@ -186,7 +187,18 @@ class UserController extends Controller
                     Session::put('remember', $userSession);
                     Session::put('userlog', $userSession);
                     Cookie::queue('usernameyglogin', $request->username, 60);
-                    return redirect("/user");
+                    if ($user->role == 'baker') {
+                        // Redirect for baker role
+                        return redirect("/baker");
+                    } elseif ($user->role == 'user') {
+                        // Redirect for user role
+                        return redirect("/user");
+                    } elseif ($user->role == 'karyawan') {
+                        // Redirect for karyawan role
+                        return redirect("/karyawan");
+                    } else {
+                        // Handle other roles if needed
+                    }
                 } else {
                     $userSession = new stdClass();
                     $userSession->user = $request->username;
@@ -194,7 +206,18 @@ class UserController extends Controller
                     $userSession->picture = $user->picture;
                     Session::put('userlog', $userSession);
                     Cookie::queue('usernameyglogin', $request->username, 60);
-                    return redirect("/user");
+                    if ($user->role == 'baker') {
+                        // Redirect for baker role
+                        return redirect("/baker");
+                    } elseif ($user->role == 'user') {
+                        // Redirect for user role
+                        return redirect("/user");
+                    } elseif ($user->role == 'karyawan') {
+                        // Redirect for karyawan role
+                        return redirect("/karyawan");
+                    } else {
+                        // Handle other roles if needed
+                    }
                 }
             } else {
                 return redirect()->route("login")->with("msg", "Password Salah");
@@ -202,7 +225,18 @@ class UserController extends Controller
         } else {
             return redirect()->route("login")->with("msg", "Username tidak ditemukan");
         }
-        //return redirect("/user");
+        if ($user->role == 'baker') {
+            // Redirect for baker role
+            return redirect("/baker");
+        } elseif ($user->role == 'user') {
+            // Redirect for user role
+            return redirect("/user");
+        } elseif ($user->role == 'karyawan') {
+            // Redirect for karyawan role
+            return redirect("/karyawan");
+        } else {
+            // Handle other roles if needed
+        }
     }
 
 
