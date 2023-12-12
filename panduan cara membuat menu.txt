@@ -1,0 +1,1 @@
+login sebagai admin dulu dan register baker. Formnya lalu diisi setelah itu logout admin. Setelah logout, login sebagai baker yang diregister lalu, register supplier dulu, setelah itu register ingredient dan setelah itu register menu.
