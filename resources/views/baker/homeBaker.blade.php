@@ -52,8 +52,9 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a href="{{ url('/baker') }}">Home Baker</a></li>
-          <li><a href="{{ url('/baker/listmenu') }}">List Menu</a></li>
-          <li><a href="{{ url('/baker/mastermenu') }}">Register Baker</a></li>
+          <li><a href="{{ url('/baker/mastermenu') }}">Register Menu</a></li>
+          <li><a href="{{ url('/baker/mastersupplier') }}">Register Supplier</a></li>
+          <li><a href="{{ url('/baker/masteringredient') }}">Register Ingredient</a></li>
         </ul>
       </nav><!-- .navbar -->
 

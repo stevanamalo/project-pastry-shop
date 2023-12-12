@@ -52,8 +52,17 @@ Route::prefix("/user")->group(function(){
     Route::get("/topup", [UserController::class, "showTopupPage"])->name("topup");
 });
 
-Route::prefix("/baker")->group(function(){
+Route::prefix("/baker")->name("baker")->group(function(){
     Route::get("/",[UserController::class, 'tampilhomebaker'] );
+    Route::get("/mastermenu", [UserController::class, "viewmastermenu"]);
+    Route::get("/mastersupplier", [UserController::class, "viewmastersupplier"]);
+    Route::get("/masteringredient", [UserController::class, "viewmasteringredient"]);
+    Route::match(['get', 'post'], "/insertsupplier", [UserController::class, "insertsupplier"])
+    ->name('insertsupplier');
+    Route::match(['get', 'post'], "/insertIngredient", [UserController::class, "insertIngredient"])
+    ->name('insertIngredient');
+    Route::match(['get', 'post'], "/insertpastry", [UserController::class, "insertpastry"])
+    ->name('insertpastry');
 });
 
 Route::prefix("/karyawan")->group(function(){

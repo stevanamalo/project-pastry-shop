@@ -12,11 +12,44 @@ use App\Models\Feed;
 use App\Models\Htrans; // Import model Htrans
 use App\Models\Dtrans;
 use App\Models\Friend;
+use App\Models\Supplier;
+use App\Models\Ingredients;
+use App\Models\pastry;
 
 class UserController extends Controller
 {
     //
+    public function showIngredients()
+{
+    $suppliers = Supplier::all();
+    $ingredients = Ingredients::all();
 
+    return view('baker.masteringredients', ['suppliers' => $suppliers, 'ingredients' => $ingredients]);
+}
+
+public function insertIngredient(Request $request)
+{
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|max:255',
+            'supplier_id' => 'required|exists:supplier,id',
+        ]);
+    
+        // Create a new ingredient
+        Ingredients::create([
+            'nama' => $request->nama,
+            'supplier_id' => $request->supplier_id,
+        ]);
+    
+        // Retrieve the updated data
+        $suppliers = Supplier::all();
+        $ingredients = Ingredients::all();
+    
+        // Pass the data to the view
+        return view('baker.masteringredient', ['suppliers' => $suppliers, 'ingredients' => $ingredients])
+            ->with('msg', 'Menu added successfully.');
+    
+}
     public function getData(){
         $userlog = Session::get("userlog");
         $data = User::where('username', $userlog->user)->first();
@@ -42,6 +75,33 @@ class UserController extends Controller
         $user = User::where('username', $username)->first();
 
         return view('user.homeUser', ['user' => $user]);
+    }
+
+    public function insertpastry(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|max:255',
+            'harga' => 'required|integer',
+            'ingredients_id' => 'required|exists:ingredients,id',
+        ]);
+
+        // Create a new pastry
+        pastry::create([
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'ingredients_id' => $request->ingredients_id,
+        ]);
+
+        // Retrieve the updated data
+        $ingredients = Ingredients::all();
+        $pastries = Pastry::all();
+
+
+        return view('baker.mastermenu', [
+            'ingredients' => $ingredients,
+            'pastries' => $pastries,
+        ]);
     }
 
     public function tampilhomebaker(){
@@ -148,6 +208,21 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('admin')->with('msg', 'Berhasil Register');
+    }
+
+    public function insertSupplier(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|unique:supplier,nama|max:255',
+        ]);
+
+        // Create a new supplier
+        Supplier::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('baker')->with('msg', 'Supplier added successfully.');
     }
 
     public function login(Request $request)
@@ -340,6 +415,28 @@ class UserController extends Controller
     public function viewmasterkaryawan()
     {
         return view("admin.masterkaryawan");
+    }
+
+    public function viewmasteringredient()
+    {
+        $ingredients = Ingredients::all();
+        $suppliers = Supplier::all();
+        return view('baker.masteringredient', ['suppliers' => $suppliers, 'ingredients' => $ingredients]);
+    }
+
+    public function viewmastersupplier()
+    {
+    $suppliers = Supplier::all();
+    // Pass the suppliers to the view
+    return view("baker.mastersupplier", ['suppliers' => $suppliers]);
+    }
+
+    public function viewmastermenu()
+    {
+        $ingredients = Ingredients::all();
+        $pastries = pastry::all();
+    
+        return view('baker.mastermenu', ['ingredients' => $ingredients, 'pastries' => $pastries]);
     }
 
 
