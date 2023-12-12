@@ -164,6 +164,20 @@ class UserController extends Controller
 
         if ($user) {
             if ($user->password == $request->password) {
+
+                if ($user->role == 'baker') {
+                    // Redirect for baker role
+                    return redirect("/baker");
+                } elseif ($user->role == 'user') {
+                    // Redirect for user role
+                    return redirect("/user");
+                } elseif ($user->role == 'karyawan') {
+                    // Redirect for karyawan role
+                    return redirect("/karyawan");
+                } else {
+                    // Handle other roles if needed
+                }
+    
                 if (isset($request->cbremember)) {
                     $userSession = new stdClass();
                     $userSession->user = $request->username;
@@ -188,7 +202,7 @@ class UserController extends Controller
         } else {
             return redirect()->route("login")->with("msg", "Username tidak ditemukan");
         }
-        return redirect("/user");
+        //return redirect("/user");
     }
 
 
