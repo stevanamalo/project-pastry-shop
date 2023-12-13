@@ -43,7 +43,7 @@
 
         </center>
             <div id="formtambah">
-                <form  method="post" action={{url("/user/PUEditProfile")}}>
+                <form  method="post" action={{url("/user/PUEditProfile")}} enctype="multipart/form-data">
                     @csrf
 
 
