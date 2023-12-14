@@ -34,11 +34,7 @@
 @endif
 
 <div id="isi">
-
     <center>
-
-
-
         <h2>List User </h2>
         <br><br>
 
@@ -50,13 +46,7 @@
                 <th scope="col">nama</th>
                 <th scope="col">email</th>
                 <th scope="col">tgl lahir</th>
-                <th scope="col">deskripsi</th>
-                <th scope="col">hobi</th>
                 <th scope="col">Aksi</th>
-
-
-
-
               </tr>
             </thead>
             <tbody>
@@ -68,8 +58,6 @@
                                     <td>{{ $user->nama }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->tgllahir }}</td>
-                                    <td>{{ $user->deskripsi }}</td>
-                                    <td>{{ $user->hobi }}</td>
                                     <td>
                                         <a href="/admin/edituser/{{ $user->username }}">
                                             <button class="btn btn-success">Edit</button>
@@ -83,15 +71,9 @@
                             <td colspan="7"><center>Belum ada User</center></td>
                         </tr>
             @endif
-
             </tbody>
           </table>
     </center>
-
 </div>
-
-
-
-
 </body>
 </html>

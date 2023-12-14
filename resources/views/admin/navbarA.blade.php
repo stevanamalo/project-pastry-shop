@@ -13,6 +13,12 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{ url('/admin/listuser') }}">List User</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url('/admin/listbaker') }}">List Baker</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url('/admin/listkaryawan') }}">List Karyawan</a>
+          </li>
           {{-- <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{ url('/admin/listfeed') }}">List Feed</a>
           </li> --}}

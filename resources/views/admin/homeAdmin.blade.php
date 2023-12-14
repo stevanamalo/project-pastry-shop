@@ -52,19 +52,26 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a href="{{ url('/admin') }}">Home Admin</a></li>
-          <li><a href="{{ url('/admin/listuser') }}">List User</a></li>
-          <li><a href="{{ url('/admin/listbaker') }}">List Baker</a></li>
-          <li><a href="{{ url('/admin/listkaryawan') }}">List Karyawan</a></li>
-          <li><a href="#">List Penjualan</a></li>
-          <li><a href="{{ url('/admin/masterbaker') }}">Register Baker</a></li>
-          <li><a href="{{ url('/admin/masterkaryawan') }}">Register Karyawan</a></li>
+          <li><a href="{{ url('/admin/listuser') }}">List Customer</a></li>
+          <li class="dropdown"><a href="#"><span>List Employee</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+                <li><a href="{{ url('/admin/listbaker') }}">List Baker</a></li>
+                <li><a href="{{ url('/admin/listkaryawan') }}">List Karyawan</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Register Employee</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+                <li><a href="{{ url('/admin/masterbaker') }}">Register Baker</a></li>
+                <li><a href="{{ url('/admin/masterkaryawan') }}">Register Karyawan</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Penjualan</a></li>
         </ul>
       </nav><!-- .navbar -->
 
       <a class="btn-book-a-table" href="{{url("/logout")}}" style="background-color:#6D4404;">Logout</a>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-
     </div>
   </header><!-- End Header -->
 
@@ -85,8 +92,6 @@
 
       </div>
     </section><!-- End About Section -->
-
-
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">

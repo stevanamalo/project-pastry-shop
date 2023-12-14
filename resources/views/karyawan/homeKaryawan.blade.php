@@ -51,11 +51,8 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a href="{{ url('/baker') }}">Home Baker</a></li>
+          <li><a href="{{ url('/karyawan') }}">Home Karyawan</a></li>
           <li><a href="{{ url('/baker/listmenu') }}">List Menu</a></li>
-          <li><a href="{{ url('/baker/mastermenu') }}">Register Baker</a></li>
-          <li><a href="{{ url('/baker/mastersupplier') }}">Register Supplier</a></li>
-          <li><a href="{{ url('/baker/masteringredient') }}">Register Ingredient</a></li>
         </ul>
       </nav><!-- .navbar -->
 
@@ -72,20 +69,15 @@
     <section id="login" class="Login">
       <div class="container" data-aos="fade-up">
 <br><br>
-        <h1>Welcome, {{ $user->username }}!</h1>
+        <h1>Welcome, Karyawan {{ $user->username }}!</h1>
     <h4>klik navbar di atas untuk navigasi!</h4>
-
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
-
       </div>
     </section><!-- End About Section -->
-
-
-
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
 
