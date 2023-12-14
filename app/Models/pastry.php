@@ -15,7 +15,7 @@ class pastry extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'nama', 'harga', 'ingredients_id',
+        'nama', 'harga','picturepastry', 'ingredients_id',
     ];
 
     public function ingredient()
