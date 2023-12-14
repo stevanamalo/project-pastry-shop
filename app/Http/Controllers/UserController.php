@@ -18,38 +18,7 @@ use App\Models\pastry;
 
 class UserController extends Controller
 {
-    //
-    public function showIngredients()
-{
-    $suppliers = Supplier::all();
-    $ingredients = Ingredients::all();
-
-    return view('baker.masteringredients', ['suppliers' => $suppliers, 'ingredients' => $ingredients]);
-}
-
-public function insertIngredient(Request $request)
-{
-        // Validate the request data
-        $request->validate([
-            'nama' => 'required|max:255',
-            'supplier_id' => 'required|exists:supplier,id',
-        ]);
-    
-        // Create a new ingredient
-        Ingredients::create([
-            'nama' => $request->nama,
-            'supplier_id' => $request->supplier_id,
-        ]);
-    
-        // Retrieve the updated data
-        $suppliers = Supplier::all();
-        $ingredients = Ingredients::all();
-    
-        // Pass the data to the view
-        return view('baker.masteringredient', ['suppliers' => $suppliers, 'ingredients' => $ingredients])
-            ->with('msg', 'Menu added successfully.');
-    
-}
+    //GET DATABASE------------------------------------------------------------------------------------------------------------------------
     public function getData(){
         $userlog = Session::get("userlog");
         $data = User::where('username', $userlog->user)->first();
@@ -67,57 +36,7 @@ public function insertIngredient(Request $request)
         return $data;
     }
 
-    public function tampilhomeuser(){
-        if (!Session::has("userlog")) {
-            return redirect()->route("login")->with('msg', "Harus Login Dahulu");
-        }
-        $username = Cookie::get('usernameyglogin');
-        $user = User::where('username', $username)->first();
-
-        return view('user.homeUser', ['user' => $user]);
-    }
-
-    public function insertpastry(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
-            'nama' => 'required|max:255',
-            'harga' => 'required|integer',
-            'ingredients_id' => 'required|exists:ingredients,id',
-        ]);
-
-        // Create a new pastry
-        pastry::create([
-            'nama' => $request->nama,
-            'harga' => $request->harga,
-            'ingredients_id' => $request->ingredients_id,
-        ]);
-
-        // Retrieve the updated data
-        $ingredients = Ingredients::all();
-        $pastries = Pastry::all();
-
-
-        return view('baker.mastermenu', [
-            'ingredients' => $ingredients,
-            'pastries' => $pastries,
-        ]);
-    }
-
-    public function tampilhomebaker(){
-        $username = Cookie::get('usernameyglogin');
-        $user = User::where('username', $username)->first();
-
-        return view('baker.homeBaker', ['user' => $user]);
-    }
-
-    public function tampilhomekaryawan(){
-        $username = Cookie::get('usernameyglogin');
-        $user = User::where('username', $username)->first();
-
-        return view('karyawan.homeKaryawan', ['user' => $user]);
-    }
-
+    //LOGOUT SEMUA USER DAN ADMIN---------------------------------------------------------------------------------------------------------
     public function logoutuser(){
         Session::forget("userlog");
         Session::forget("adminlog");
@@ -126,6 +45,7 @@ public function insertIngredient(Request $request)
         return view("dashboard");
     }
 
+    //REGISTER AKUN USER SESUAI ROLE NYA--------------------------------------------------------------------------------------------------
     public function registerakun(Request $request)
     {
         $user = User::where('username', $request->usernameReg)->first();
@@ -176,7 +96,7 @@ public function insertIngredient(Request $request)
             'username' => $request->usernameReg,
             'nama' => $request->namaReg,
             'email' => $request->emailReg,
-            'password' => $request->password, 
+            'password' => $request->password,
             'tgllahir' => $request->tgllahir,
             'saldo' => 0,
             'role' => 'baker',
@@ -201,7 +121,7 @@ public function insertIngredient(Request $request)
             'username' => $request->usernameReg,
             'nama' => $request->namaReg,
             'email' => $request->emailReg,
-            'password' => $request->password, 
+            'password' => $request->password,
             'tgllahir' => $request->tgllahir,
             'saldo' => 0,
             'role' => 'karyawan',
@@ -210,21 +130,7 @@ public function insertIngredient(Request $request)
         return redirect()->route('admin')->with('msg', 'Berhasil Register');
     }
 
-    public function insertSupplier(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
-            'nama' => 'required|unique:supplier,nama|max:255',
-        ]);
-
-        // Create a new supplier
-        Supplier::create([
-            'nama' => $request->nama,
-        ]);
-
-        return redirect()->route('baker')->with('msg', 'Supplier added successfully.');
-    }
-
+    //FITUR LOGIN--------------------------------------------------------------------------------------------------------------------------
     public function login(Request $request)
     {
         $listuser = User::all();
@@ -253,7 +159,7 @@ public function insertIngredient(Request $request)
 
         if ($user) {
             if ($user->password == $request->password) {
-    
+
                 if (isset($request->cbremember)) {
                     $userSession = new stdClass();
                     $userSession->user = $request->username;
@@ -314,7 +220,32 @@ public function insertIngredient(Request $request)
         }
     }
 
+    // BAGIAN MENUJU TAMPILAN HOME USER PER ROLE-----------------------------------------------------------------------------------------------
+    public function tampilhomeuser(){
+        if (!Session::has("userlog")) {
+            return redirect()->route("login")->with('msg', "Harus Login Dahulu");
+        }
+        $username = Cookie::get('usernameyglogin');
+        $user = User::where('username', $username)->first();
 
+        return view('user.homeUser', ['user' => $user]);
+    }
+
+    public function tampilhomebaker(){
+        $username = Cookie::get('usernameyglogin');
+        $user = User::where('username', $username)->first();
+
+        return view('baker.homeBaker', ['user' => $user]);
+    }
+
+    public function tampilhomekaryawan(){
+        $username = Cookie::get('usernameyglogin');
+        $user = User::where('username', $username)->first();
+
+        return view('karyawan.homeKaryawan', ['user' => $user]);
+    }
+
+    // FITUR UPDATE PROFILE DAN TAMPILAN PROFILE USER CUSTOMER--------------------------------------------------------------------------------------
     public function tampilProfile(Request $request){
         if (!Session::has("userlog")) {
             return redirect()->route("login")->with('msg', "Harus Login Dahulu");
@@ -382,7 +313,7 @@ public function insertIngredient(Request $request)
         }
     }
 
-
+    //MENAMPILKAN HALAMAN DI AKUN ADMIN--------------------------------------------------------------------------------------------------------
     public function listUser()
     {
         $data = $this->getDataAll();
@@ -417,6 +348,21 @@ public function insertIngredient(Request $request)
         return view("admin.masterkaryawan");
     }
 
+    //proses admim edit user
+    public function PAEditUser(Request $request, $username)
+    {
+        User::where('username', $username)->update([
+            "nama" => $request->input("nama"),
+        ]);
+
+        return redirect()->back()->with("msg", "berhasil edit");
+    }
+    public function adminedituser($username)
+    {
+        $data = $this->getUserBy($username);
+        return view("admin.edituser", ["data" => $data, "username" => $username]);
+    }
+    //TAMPILAN HALAMAN AKUN BAKER DAN FITUR FITURNYA-------------------------------------------------------------------------------------------
     public function viewmasteringredient()
     {
         $ingredients = Ingredients::all();
@@ -435,27 +381,103 @@ public function insertIngredient(Request $request)
     {
         $ingredients = Ingredients::all();
         $pastries = pastry::all();
-    
+
         return view('baker.mastermenu', ['ingredients' => $ingredients, 'pastries' => $pastries]);
     }
 
-
-
-    public function adminedituser($username)
+    public function showIngredients()
     {
-        $data = $this->getUserBy($username);
-        return view("admin.edituser", ["data" => $data, "username" => $username]);
+        $suppliers = Supplier::all();
+        $ingredients = Ingredients::all();
+
+        return view('baker.masteringredients', ['suppliers' => $suppliers, 'ingredients' => $ingredients]);
     }
-    //proses admim edit user
-    public function PAEditUser(Request $request, $username)
-    {
-        User::where('username', $username)->update([
-            "nama" => $request->input("nama"),
+
+
+    //BAGIAN INSERT PASTRY, SUPPLIER, BAHAN -------------------------------------------------------------------------------------------
+    public function insertpastry(Request $request)
+        {
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|max:255',
+            'harga' => 'required|integer',
+            'picturepastry' => 'required|image|mimes:jpeg,jpg,gif,png|max:3072', // Maksimal 3MB
+            'ingredients_id' => 'required|exists:ingredients,id',
         ]);
 
-        return redirect()->back()->with("msg", "berhasil edit");
+        // Check if the pastry with the same name and ingredients already exists
+        $existingPastry = Pastry::where('nama', $request->nama)
+                                ->where('ingredients_id', $request->ingredients_id)
+                                ->first();
+
+        if (!$existingPastry) {
+            // Upload and save the pastry picture
+            $picturePath = $request->file('picturepastry')->store('public/profile');
+            $picturePath = str_replace('public/', 'storage/', $picturePath);
+
+            // Create a new pastry
+            Pastry::create([
+                'nama' => $request->nama,
+                'harga' => $request->harga,
+                'picturepastry' => $picturePath,
+                'ingredients_id' => $request->ingredients_id,
+            ]);
+
+            // Retrieve the updated data
+            $ingredients = Ingredients::all();
+            $pastries = Pastry::all();
+
+            return view('baker.mastermenu', [
+                'ingredients' => $ingredients,
+                'pastries' => $pastries,
+            ]);
+        } else {
+            // Handle the case where the pastry with the same name and ingredients already exists
+            return redirect()->back()->with('msg', 'Pastry with the same name and ingredients already exists.');
+        }
+        }
+
+        public function insertIngredient(Request $request)
+        {
+                // Validate the request data
+                $request->validate([
+                    'nama' => 'required|max:255',
+                    'supplier_id' => 'required|exists:supplier,id',
+                ]);
+
+                // Create a new ingredient
+                Ingredients::create([
+                    'nama' => $request->nama,
+                    'supplier_id' => $request->supplier_id,
+                ]);
+
+                // Retrieve the updated data
+                $suppliers = Supplier::all();
+                $ingredients = Ingredients::all();
+
+                // Pass the data to the view
+                return view('baker.masteringredient', ['suppliers' => $suppliers, 'ingredients' => $ingredients])
+                    ->with('msg', 'Menu added successfully.');
+
+        }
+
+
+    public function insertSupplier(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|unique:supplier,nama|max:255',
+        ]);
+
+        // Create a new supplier
+        Supplier::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('baker')->with('msg', 'Supplier added successfully.');
     }
 
+    //TAMPILAN HALAMAN AKUN CUSTOMER ------------------------------------------------------------------------------------------------------------
     public function tampilHMembership()
     {
         if (!Session::has("userlog")) {
@@ -469,8 +491,7 @@ public function insertIngredient(Request $request)
         return view("user.membership" , ['user' => $user]);
     }
 
-
-
+    //FITUR TOP UP -------------------------------------------------------------------------------------------------------------------------------
     public function showTopupPage()
     {
         if (!Session::has("userlog")) {
