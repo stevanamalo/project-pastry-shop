@@ -108,14 +108,49 @@
 
       <a href="{{ url('/baker') }}">Back to baker Home</a>
     </form>
-
     <h2>Existing Ingredients</h2>
 
-    <ul>
-      @foreach ($ingredients as $ingredient)
-        <li>{{ $ingredient->nama }} - Supplier: {{ $ingredient->supplier->nama }}</li>
-      @endforeach
-    </ul>
+    <table id="tabel" border="1px solid black">
+      <thead>
+        <th>No.</th>
+        <th>Nama Ingredient</th>
+        <th>Supplier</th>
+        <th>Ubah</th>
+        <th>Hapus</th>
+      </thead>
+      <tbody>
+        @foreach ($ingredients as $ingredient)
+          <tr>
+            <form method="post" action="{{ url("/baker/updateIngredient/{$ingredient->id}") }}">
+              @csrf
+              <input type="hidden" name="_method" value="POST">
+              <td>{{ $loop->index+1 }}</td>
+              <td><input type="text" value="{{ $ingredient->nama }}" name="nama"></td>
+              <td>
+                <select name="supplier_id" required>
+                  @foreach ($suppliers as $supplier)
+                    <option value="{{ $supplier->id }}" @if($supplier->id == $ingredient->supplier_id) selected @endif>{{ $supplier->nama }}</option>
+                  @endforeach
+                </select>
+              </td>
+              <td>
+                <button type="submit" class="editBtn">Ubah</button>
+              </td>
+            </form>
+            <td>
+              <form method="post" action="{{ url("/baker/deleteIngredient/{$ingredient->id}") }}" onclick="return confirm('Are you sure?')">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
+</div>
+
   </div>
 
 </body>

@@ -103,11 +103,37 @@
     </form>
 
     <h2>Existing Suppliers</h2>
-    <ul>
-      @foreach ($suppliers as $supplier)
-        <li>{{ $supplier->nama }}</li>
-      @endforeach
-    </ul>
+    <table id="tabel" border="1px solid black">
+      <thead>
+        <th>No.</th>
+        <th>Nama Supplier</th>
+        <th>Ubah</th>
+        <th>Hapus</th>
+      </thead>
+      <tbody>
+        @foreach ($suppliers as $supplier)
+          <tr>
+            <form method="post" action="{{ url("/baker/updateSupplier/{$supplier->id}") }}">
+              @csrf
+              <input type="hidden" name="_method" value="PUT">
+              <td>{{ $loop->index+1 }}</td>
+              <td><input type="text" value="{{ $supplier->nama }}" name="nama"></td>
+              <td>
+                <button type="submit" class="editBtn">Ubah</button>
+              </td>
+            </form>
+            <td>
+              <form method="post" action="{{ url("/baker/deleteSupplier/{$supplier->id}") }}" onsubmit="return confirm('Are you sure?')">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
   </div>
 
 </body>

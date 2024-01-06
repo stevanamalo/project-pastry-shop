@@ -118,19 +118,62 @@
         <a href="{{ url('/baker')  }}">Back to Baker</a>
      </form>
 
-    <h2>List Pastries</h2>
-    <ul>
+     <h2>List Pastries</h2>
+<table id="tabel" border="1px solid black">
+    <thead>
+        <th>No.</th>
+        <th>Nama Pastry</th>
+        <th>Harga</th>
+        <th>Ingredients</th>
+        <th>Picture</th>
+        <th>Ubah</th>
+        <th>Hapus</th>
+    </thead>
+    <tbody>
         @foreach ($pastries as $pastry)
-            <div class="container1">
-                <center>
-                    <img src="{{ asset($pastry->picturepastry) }}" alt="{{ $pastry->nama }}" width="120">
-                </center>
-              <br>
-              {{ $pastry->nama }}
-              <br>Price: {{ $pastry->harga }}
-              <br>Ingredients: {{ $pastry->ingredient->nama }}
-            </div>
+        <tr>
+            <form method="post" action="{{ url("/baker/updatePastry/{$pastry->id}") }}" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="_method" value="PUT">
+                <td>{{ $loop->index + 1 }}</td>
+                <td><input type="text" value="{{ $pastry->nama }}" name="nama"></td>
+                <td><input type="number" value="{{ $pastry->harga }}" name="harga"></td>
+                <td>
+                    <select name="ingredients_id" required>
+                        @foreach ($ingredients as $ingredient)
+                        <option value="{{ $ingredient->id }}" @if($ingredient->id == $pastry->ingredients_id) selected @endif>
+                            {{ $ingredient->nama }}
+                        </option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    @if($pastry->picturepastry)
+                        <img src="{{ asset($pastry->picturepastry) }}" alt="Pastry Image" style="max-width: 100px;">
+                    @else
+                        No Image
+                    @endif
+                    <input type="file" name="new_picturepastry">
+                </td>
+                <td>
+                    <button type="submit" class="editBtn">Ubah</button>
+                </td>
+            </form>
+            <td>
+                <form method="post" action="{{ url("/baker/deletePastry/{$pastry->id}") }}" onclick="return confirm('Are you sure?')">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
         @endforeach
+    </tbody>
+</table>
+
+
      </ul>
   </div>
 

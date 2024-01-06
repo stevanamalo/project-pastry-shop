@@ -63,6 +63,17 @@ Route::prefix("/baker")->name("baker")->group(function(){
     ->name('insertIngredient');
     Route::match(['get', 'post'], "/insertpastry", [UserController::class, "insertpastry"])
     ->name('insertpastry');
+    Route::get("/editIngredient/{id}", [UserController::class, 'editIngredient'])->name('editIngredient');
+
+    Route::post("/updateIngredient/{id}", [UserController::class, 'updateIngredient'])->name('updateIngredient');
+    Route::delete("/deleteIngredient/{id}", [UserController::class, 'deleteIngredient'])->name('deleteIngredient');
+
+    Route::delete("/deleteSupplier/{id}", [UserController::class, 'deleteSupplier'])->name('deleteSupplier');
+    Route::put("/updateSupplier/{id}", [UserController::class, 'updateSupplier'])->name('updateSupplier');
+
+    Route::put("/updatePastry/{id}", [UserController::class, 'updatePastry'])->name('updatePastry');
+    Route::delete("/deletePastry/{id}", [UserController::class, 'deletePastry'])->name('deletePastry');
+
 });
 
 Route::prefix("/karyawan")->group(function(){
