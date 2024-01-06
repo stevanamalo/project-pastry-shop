@@ -43,6 +43,7 @@ Route::prefix("/admin")->name("admin")->group(function(){
 Route::prefix("/user")->group(function(){
     Route::get("/",[UserController::class, 'tampilhomeuser'] );
     Route::get("/dashboard", [UserController::class, 'tampilhomeuser'] );
+    Route::get("/menu", [UserController::class, 'tampilmenu'] );
     Route::get("/profile", [UserController::class, 'tampilProfile'])->name("profile");
     Route::get("/HEditProfile", [UserController::class, 'HUEditProfile']);
     Route::post("/PUEditProfile",[UserController::class, "PUEditProfile"]);

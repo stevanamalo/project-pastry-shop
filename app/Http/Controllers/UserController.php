@@ -677,5 +677,15 @@ public function deletePastry($id)
     }
 }
 
+public function tampilmenu(){
+    if (!Session::has("userlog")) {
+        return redirect()->route("login")->with('msg', "Harus Login Dahulu");
+    }
+    $username = Cookie::get('usernameyglogin');
+    $user = User::where('username', $username)->first();
+
+    return view('user.menu', ['user' => $user]);
+}
+
 
 }
