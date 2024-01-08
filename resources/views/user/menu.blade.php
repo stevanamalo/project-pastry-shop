@@ -22,7 +22,7 @@
 </head>
 <body>
     @include('user.navbarU')
-    ini works
+    ini gajadi works
 <center>
     <!-- Tampilkan informasi lain sesuai kebutuhan -->
 
