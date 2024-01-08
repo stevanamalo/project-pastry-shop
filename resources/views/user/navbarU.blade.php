@@ -15,6 +15,8 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href={{ url('user/menu') }}>Menu</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href={{ url('user/keranjang') }}>Keranjang</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href={{ url('user/membership') }}>Membership</a>

@@ -22,7 +22,41 @@
 </head>
 <body>
     @include('user.navbarU')
-    ini gajadi works
+    Menu bakery
+    <br>
+    <table id="tabel" border="0px">
+        <thead>
+            <th>No.</th>
+            <th>Nama Pastry</th>
+            <th>Harga</th>
+            <th>Picture</th>
+            <th>action</th>
+        </thead>
+        <tbody>
+            @foreach ($pastries as $pastry)
+            <tr>
+                <form method="post" action="{{ url("/baker/updatePastry/{$pastry->id}") }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="_method" value="PUT">
+                    <td>{{ $loop->index + 1 }}</td>
+                    <td><input type="text" value="{{ $pastry->nama }}" name="nama"></td>
+                    <td><input type="number" value="{{ $pastry->harga }}" name="harga"></td>
+                    <td>
+                        @if($pastry->picturepastry)
+                            <img src="{{ asset($pastry->picturepastry) }}" alt="Pastry Image" style="max-width: 100px;">
+                        @else
+                            No Image
+                        @endif
+                    </td>
+                    <td>
+                        <button type="submit" class="editBtn">Order!</button>
+                    </td>
+                </form>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 <center>
     <!-- Tampilkan informasi lain sesuai kebutuhan -->
 

@@ -378,14 +378,6 @@ class UserController extends Controller
     return view("baker.mastersupplier", ['suppliers' => $suppliers]);
     }
 
-    public function viewmastermenu()
-    {
-        $ingredients = Ingredients::all();
-        $pastries = pastry::all();
-
-        return view('baker.mastermenu', ['ingredients' => $ingredients, 'pastries' => $pastries]);
-    }
-
     public function showIngredients()
     {
         $suppliers = Supplier::all();
@@ -490,6 +482,13 @@ class UserController extends Controller
 
 
         return view("user.membership" , ['user' => $user]);
+    }
+
+    public function viewmenuuser()
+    {
+        $pastries = pastry::all();
+
+        return view('user.menu', ['pastries' => $pastries]);
     }
 
     //FITUR TOP UP -------------------------------------------------------------------------------------------------------------------------------
@@ -733,8 +732,22 @@ public function tampilmenu(){
     $username = Cookie::get('usernameyglogin');
     $user = User::where('username', $username)->first();
 
-    return view('user.menu', ['user' => $user]);
+    $pastries = pastry::all();
+    return view('user.menu', ['pastries' => $pastries],['user' => $user]);
+
+    
 }
+
+public function tampilkeranjang(){
+    if (!Session::has("userlog")) {
+        return redirect()->route("login")->with('msg', "Harus Login Dahulu");
+    }
+    $username = Cookie::get('usernameyglogin');
+    $user = User::where('username', $username)->first();
+
+    return view('user.keranjang',['user' => $user]);
+}   
+
 
 
 }

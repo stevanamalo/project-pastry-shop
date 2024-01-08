@@ -44,12 +44,14 @@ Route::prefix("/user")->group(function(){
     Route::get("/",[UserController::class, 'tampilhomeuser'] );
     Route::get("/dashboard", [UserController::class, 'tampilhomeuser'] );
     Route::get("/menu", [UserController::class, 'tampilmenu'] );
+    Route::get("/keranjang", [UserController::class, 'tampilkeranjang'] );
     Route::get("/profile", [UserController::class, 'tampilProfile'])->name("profile");
     Route::get("/HEditProfile", [UserController::class, 'HUEditProfile']);
     Route::post("/PUEditProfile",[UserController::class, "PUEditProfile"]);
     Route::get("/membership",[UserController::class, "tampilHMembership"])->name("Hprofile");
     Route::post("/belimembership", [UserController::class, "beliMembership"]);
     Route::post("/topup", [UserController::class, "topup"]);
+    Route::get("/mastermenu", [UserController::class, "viewmastermenu"]);
     Route::get("/topup", [UserController::class, "showTopupPage"])->name("topup");
 });
 
