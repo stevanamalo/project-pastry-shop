@@ -15,6 +15,7 @@ use App\Models\Friend;
 use App\Models\Supplier;
 use App\Models\Ingredients;
 use App\Models\pastry;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -529,6 +530,152 @@ class UserController extends Controller
         // Update saldo user setelah topup
 
     }
-    //berikan code baru disini
+    public function editIngredient($id)
+    {
+        $ingredient = Ingredients::find($id);
+        $suppliers = Supplier::all(); // Assuming you have a Supplier model
+    
+        return view('baker.masteringredient', [
+            'ingredient' => $ingredient,
+            'suppliers' => $suppliers,
+        ]);
+    }
+    
+    public function updateIngredient(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|max:255',
+            'supplier_id' => 'required|exists:supplier,id',
+        ]);
+    
+        $ingredient = Ingredients::find($id);
+    
+        if ($ingredient) {
+            $ingredient->update([
+                'nama' => $request->nama,
+                'supplier_id' => $request->supplier_id,
+            ]);
+    
+            return redirect()->back()->with('msg', 'Ingredient updated successfully.');
+        } else {
+            return redirect()->back()->with('msg', 'Ingredient not found.');
+        }
+    }
+    
+    public function deleteIngredient($id)
+    {
+        $ingredient = Ingredients::find($id);
+    
+        if ($ingredient) {
+            $ingredient->delete();
+    
+            return redirect()->back()->with('msg', 'Ingredient deleted successfully.');
+        } else {
+            return redirect()->back()->with('msg', 'Ingredient not found.');
+        }
+    }
+    
+
+
+// Other controller functions...
+
+    public function updateSupplier(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|max:255|unique:supplier,nama,' . $id,
+        ]);
+
+        $supplier = Supplier::find($id);
+
+        if ($supplier) {
+            $supplier->update([
+                'nama' => $request->nama,
+            ]);
+
+            return redirect()->back()->with('msg', 'Supplier updated successfully.');
+        } else {
+            return redirect()->back()->with('msg', 'Supplier not found.');
+        }
+    }
+
+    public function deleteSupplier($id)
+    {
+        $supplier = Supplier::find($id);
+
+        if ($supplier) {
+            $supplier->delete();
+
+            return redirect()->back()->with('msg', 'Supplier deleted successfully.');
+        } else {
+            return redirect()->back()->with('msg', 'Supplier not found.');
+        }
+    }
+
+// ...
+
+public function updatePastry(Request $request, $id)
+{
+    // Validate the request data
+    $request->validate([
+        'nama' => 'required|max:255',
+        'harga' => 'required|integer',
+        'ingredients_id' => 'required|exists:ingredients,id',
+        'new_picturepastry' => 'image|mimes:jpeg,jpg,gif,png|max:3072', // Max 3MB
+    ]);
+
+    // Find the pastry
+    $pastry = Pastry::find($id);
+
+    if (!$pastry) {
+        return redirect()->back()->with('msg', 'Pastry not found.');
+    }
+
+    // Handle image upload
+    if ($request->hasFile('new_picturepastry')) {
+        // Delete the old image if it exists
+        if ($pastry->picturepastry) {
+            Storage::delete($pastry->picturepastry);
+        }
+
+        // Upload the new image
+        $newPicturePath = $request->file('new_picturepastry')->store('public/profile');
+        $newPicturePath = str_replace('public/', 'storage/', $newPicturePath);
+
+        // Update the pastry with the new image path
+        $pastry->update([
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'ingredients_id' => $request->ingredients_id,
+            'picturepastry' => $newPicturePath,
+        ]);
+    } else {
+        // Update the pastry details without changing the image
+        $pastry->update([
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'ingredients_id' => $request->ingredients_id,
+        ]);
+    }
+
+    return redirect()->back()->with('msg', 'Pastry updated successfully.');
+}
+
+public function deletePastry($id)
+{
+    $pastry = Pastry::find($id);
+
+    if ($pastry) {
+        // Soft delete the pastry
+        $pastry->delete();
+
+        // If you want to permanently delete the image file, you can uncomment the line below
+        // Storage::delete($pastry->picturepastry);
+
+        return redirect()->back()->with('msg', 'Pastry deleted successfully.');
+    } else {
+        return redirect()->back()->with('msg', 'Pastry not found.');
+    }
+}
+
 
 }

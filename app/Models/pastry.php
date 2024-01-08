@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class pastry extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'pastry';
     protected $primaryKey = 'id';
@@ -15,11 +16,13 @@ class pastry extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'nama', 'harga','picturepastry', 'ingredients_id',
+        'nama', 'harga', 'picturepastry', 'ingredients_id',
     ];
 
     public function ingredient()
     {
         return $this->belongsTo(Ingredients::class, 'ingredients_id');
     }
+
+    protected $dates = ['deleted_at'];
 }

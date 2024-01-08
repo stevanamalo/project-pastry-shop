@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ingredients extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $table = 'ingredients'; // Adjust the table name to match your actual table name
+    protected $table = 'ingredients';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
+        'id', // Add 'id' to the fillables array
         'nama',
         'supplier_id',
     ];
@@ -23,4 +25,6 @@ class Ingredients extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+
+    protected $dates = ['deleted_at'];
 }
