@@ -530,51 +530,100 @@ class UserController extends Controller
         // Update saldo user setelah topup
 
     }
+    public function beliMembership()
+    {
+        $user = $this->getData();
+
+        // Check saldo
+        if ($user->saldo < 50000) {
+            return redirect()->route("membership")->with('msg', "Saldo tidak cukup untuk membeli Membership");
+        }
+
+        // Membuat Htrans dan mendapatkan ID
+        Htrans::create([
+            'user_id' => $user->id,
+            'tanggal' => now(),  // Assuming you want to use the current date and time
+            'membership_id' => 1,  // Assuming membership is always 1
+        ]);
+
+        // Dtrans::create([
+        //          "id_htrans" => $idhtrans,
+        //         "item" => "membership",
+        //       "harga" => 50000
+        //     ]);
+
+        User::where('id', $user->id)->update([
+                "member" => 1,
+               "saldo" => $user->saldo - 50000,
+            ]);
+
+        return redirect()->back()->with('msg', 'Purchase successful.');
+
+        // $idhtrans = $htrans->id;
+
+        // // Membuat Dtrans
+        // Dtrans::create([
+        //     "id_htrans" => $idhtrans,
+        //     "item" => "membership",
+        //     "harga" => 50000
+        // ]);
+
+        // // Mengupdate status member pada user
+        // User::where('id', $user->id)->update([
+        //     "member" => 1,
+        //     "saldo" => $user->saldo - 50000,
+        // ]);
+
+        // // Mendapatkan data user setelah pembelian
+        // $user = $this->getData();
+
+        // return redirect()->route("Hprofile")->with('msg', "Berhasil beli");
+    }
     public function editIngredient($id)
     {
         $ingredient = Ingredients::find($id);
         $suppliers = Supplier::all(); // Assuming you have a Supplier model
-    
+
         return view('baker.masteringredient', [
             'ingredient' => $ingredient,
             'suppliers' => $suppliers,
         ]);
     }
-    
+
     public function updateIngredient(Request $request, $id)
     {
         $request->validate([
             'nama' => 'required|max:255',
             'supplier_id' => 'required|exists:supplier,id',
         ]);
-    
+
         $ingredient = Ingredients::find($id);
-    
+
         if ($ingredient) {
             $ingredient->update([
                 'nama' => $request->nama,
                 'supplier_id' => $request->supplier_id,
             ]);
-    
+
             return redirect()->back()->with('msg', 'Ingredient updated successfully.');
         } else {
             return redirect()->back()->with('msg', 'Ingredient not found.');
         }
     }
-    
+
     public function deleteIngredient($id)
     {
         $ingredient = Ingredients::find($id);
-    
+
         if ($ingredient) {
             $ingredient->delete();
-    
+
             return redirect()->back()->with('msg', 'Ingredient deleted successfully.');
         } else {
             return redirect()->back()->with('msg', 'Ingredient not found.');
         }
     }
-    
+
 
 
 // Other controller functions...
