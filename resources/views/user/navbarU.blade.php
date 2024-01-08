@@ -16,6 +16,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href={{ url('user/membership') }}>Membership</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href={{ url('user/listmenu') }}>List Menu</a>
+          </li>
 
           <!-- Tambahkan baris berikut di dalam navbar -->
           <li class="nav-item">

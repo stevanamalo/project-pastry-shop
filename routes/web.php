@@ -26,7 +26,7 @@ Route::post("/registerakun",[UserController::class, "registerakun"]);
 Route::post('/loginuser', [UserController::class, "login"]);
 
 //untuk Admin
-Route::prefix("/admin")->name("admin")->group(function(){
+Route::prefix("/admin")->group(function(){
     Route::view("/","admin.homeAdmin" );
     Route::get("/listuser", [UserController::class, "listUser"]);
     Route::get("/listbaker", [UserController::class, "listBaker"]);
@@ -43,6 +43,7 @@ Route::prefix("/admin")->name("admin")->group(function(){
 Route::prefix("/user")->group(function(){
     Route::get("/",[UserController::class, 'tampilhomeuser'] );
     Route::get("/dashboard", [UserController::class, 'tampilhomeuser'] );
+    Route::get("/listmenu", [UserController::class, 'tampillistmenu'] );
     Route::get("/profile", [UserController::class, 'tampilProfile'])->name("profile");
     Route::get("/HEditProfile", [UserController::class, 'HUEditProfile']);
     Route::post("/PUEditProfile",[UserController::class, "PUEditProfile"]);
@@ -52,7 +53,7 @@ Route::prefix("/user")->group(function(){
     Route::get("/topup", [UserController::class, "showTopupPage"])->name("topup");
 });
 
-Route::prefix("/baker")->name("baker")->group(function(){
+Route::prefix("/baker")->group(function(){
     Route::get("/",[UserController::class, 'tampilhomebaker'] );
     Route::get("/mastermenu", [UserController::class, "viewmastermenu"]);
     Route::get("/mastersupplier", [UserController::class, "viewmastersupplier"]);

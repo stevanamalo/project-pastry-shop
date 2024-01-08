@@ -490,6 +490,18 @@ class UserController extends Controller
 
         return view("user.membership" , ['user' => $user]);
     }
+    public function tampillistmenu()
+    {
+        if (!Session::has("userlog")) {
+            return redirect()->route("login")->with('msg', "Harus Login Dahulu");
+        }
+
+        $username = Cookie::get('usernameyglogin');
+        $user = User::where('username', $username)->first();
+
+
+        return view("user.listmenu" , ['user' => $user]);
+    }
 
     //FITUR TOP UP -------------------------------------------------------------------------------------------------------------------------------
     public function showTopupPage()
@@ -530,5 +542,53 @@ class UserController extends Controller
 
     }
     //berikan code baru disini
+    public function beliMembership()
+    {
+        $user = $this->getData();
 
+        // Check saldo
+        if ($user->saldo < 50000) {
+            return redirect()->route("membership")->with('msg', "Saldo tidak cukup untuk membeli Membership");
+        }
+
+        // Membuat Htrans dan mendapatkan ID
+        Htrans::create([
+            'user_id' => $user->id,
+            'tanggal' => now(),  // Assuming you want to use the current date and time
+            'membership_id' => 1,  // Assuming membership is always 1
+        ]);
+
+        // Dtrans::create([
+        //          "id_htrans" => $idhtrans,
+        //         "item" => "membership",
+        //       "harga" => 50000
+        //     ]);
+
+        User::where('id', $user->id)->update([
+                "member" => 1,
+               "saldo" => $user->saldo - 50000,
+            ]);
+
+        return redirect()->back()->with('msg', 'Purchase successful.');
+
+        // $idhtrans = $htrans->id;
+
+        // // Membuat Dtrans
+        // Dtrans::create([
+        //     "id_htrans" => $idhtrans,
+        //     "item" => "membership",
+        //     "harga" => 50000
+        // ]);
+
+        // // Mengupdate status member pada user
+        // User::where('id', $user->id)->update([
+        //     "member" => 1,
+        //     "saldo" => $user->saldo - 50000,
+        // ]);
+
+        // // Mendapatkan data user setelah pembelian
+        // $user = $this->getData();
+
+        // return redirect()->route("Hprofile")->with('msg', "Berhasil beli");
+    }
 }
