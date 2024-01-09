@@ -15,6 +15,7 @@ use App\Models\Friend;
 use App\Models\Supplier;
 use App\Models\Ingredients;
 use App\Models\pastry;
+use App\Models\cart;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -377,6 +378,14 @@ class UserController extends Controller
     // Pass the suppliers to the view
     return view("baker.mastersupplier", ['suppliers' => $suppliers]);
     }
+    public function viewmastermenu()
+    {
+        $ingredients = Ingredients::all();
+        $suppliers = Supplier::all();
+        $pastry = Pastry::all();
+        return view('baker.mastermenu', ['suppliers' => $suppliers, 'ingredients' => $ingredients, 'pastries' => $pastry]);
+    }
+
 
     public function showIngredients()
     {
@@ -735,9 +744,32 @@ public function tampilmenu(){
     $pastries = pastry::all();
     return view('user.menu', ['pastries' => $pastries],['user' => $user]);
 
-    
+
 }
 
+
+
+public function insertcart(Request $request)
+{
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|exists:nama,id',
+            'pastry_id' => 'required|exists:pastry,nama',
+        ]);
+
+        // Create a new ingredient
+        cart::create([
+            'nama' => $request->nama,
+            'supplier_id' => $request->pastry_id,
+        ]);
+
+        $pastries = pastry::all();
+        $user = User::all();
+        // Pass the data to the view
+        // return redirect()->back()->with('msg', 'Pastry Added successfully.');
+        return view('user.menu', ['pastries' => $pastries], ['user' => $user]);
+
+}
 public function tampilkeranjang(){
     if (!Session::has("userlog")) {
         return redirect()->route("login")->with('msg', "Harus Login Dahulu");
@@ -745,9 +777,10 @@ public function tampilkeranjang(){
     $username = Cookie::get('usernameyglogin');
     $user = User::where('username', $username)->first();
 
-    return view('user.keranjang',['user' => $user]);
-}   
-
+    $pastries = pastry::all();
+    // Pass the data to the view
+    return view('user.keranjang', ['pastries' => $pastries], ['user' => $user]);
+}
 
 
 }

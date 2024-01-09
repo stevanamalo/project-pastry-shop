@@ -35,7 +35,7 @@
         <tbody>
             @foreach ($pastries as $pastry)
             <tr>
-                <form method="post" action="{{ url("/baker/updatePastry/{$pastry->id}") }}" enctype="multipart/form-data">
+                <form method="post" action="{{ url("/user/insertcart/{$pastry->id}") }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="_method" value="PUT">
