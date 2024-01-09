@@ -23,6 +23,28 @@
 <body>
     @include('user.navbarU')
     list keranjang
+    <br>
+    <table id="tabel" border="0px">
+        <thead>
+            <th>No.</th>
+            <th>Nama Pastry</th>
+            <th>Harga</th>
+        </thead>
+        <tbody>
+            @foreach ($pastries as $pastry)
+            <tr>
+                <form method="post" action="{{ url("/user/insertcart/{$pastry->id}") }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="_method" value="PUT">
+                    <td>{{ $loop->index + 1 }}</td>
+                    <td><input type="text" value="{{ $pastry->nama }}" name="nama"></td>
+                    <td><input type="number" value="{{ $pastry->harga }}" name="harga"></td>
+                </form>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 <center>
     <!-- Tampilkan informasi lain sesuai kebutuhan -->
 

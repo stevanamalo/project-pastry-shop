@@ -15,6 +15,7 @@ use App\Models\Friend;
 use App\Models\Supplier;
 use App\Models\Ingredients;
 use App\Models\pastry;
+use App\Models\cart;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -745,9 +746,30 @@ public function tampilkeranjang(){
     $username = Cookie::get('usernameyglogin');
     $user = User::where('username', $username)->first();
 
-    return view('user.keranjang',['user' => $user]);
+    $pastries = pastry::all();
+    // Pass the data to the view
+    return view('user.keranjang', ['pastries' => $pastries], ['user' => $user]);
 }   
 
+public function insertcart(Request $request)
+{
+        // Validate the request data
+        $request->validate([
+            'nama' => 'required|exists:nama,id',
+            'pastry_id' => 'required|exists:pastry,nama',
+        ]);
+
+        // Create a new ingredient
+        cart::create([
+            'nama' => $request->nama,
+            'supplier_id' => $request->pastry_id,
+        ]);
+
+        $pastries = pastry::all();
+        // Pass the data to the view
+        return view('user.keranjang', ['pastries' => $pastries], ['user' => $user]);
+
+}
 
 
 }
