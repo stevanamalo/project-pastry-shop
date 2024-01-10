@@ -325,6 +325,15 @@ class UserController extends Controller
         return view("admin.listU", ["data" => $data, "jumlah" => $jumlah]);
     }
 
+    public function listpenjualan()
+    {
+        $data = $this->getDataAll();
+        $penjualan = dtrans::All();
+
+
+        return view("admin.penjualan", ['penjualan' => $penjualan]);
+    }
+
     public function listBaker()
     {
         $data = $this->getDataAll();
@@ -899,4 +908,15 @@ public function checkout()
 
 
 
+public function tampilpenjualan(){
+    if (!Session::has("userlog")) {
+        return redirect()->route("login")->with('msg', "Harus Login Dahulu");
+    }
+    $username = Cookie::get('usernameyglogin');
+    $user = User::where('username', $username)->first();
+
+    $pastries = pastry::all();
+    // Pass the data to the view
+    return view('user.keranjang', ['pastries' => $pastries], ['user' => $user]);
+}
 }

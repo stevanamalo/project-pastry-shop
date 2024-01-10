@@ -29,6 +29,7 @@ Route::post('/loginuser', [UserController::class, "login"]);
 Route::prefix("/admin")->name("admin")->group(function(){
     Route::view("/","admin.homeAdmin" );
     Route::get("/listuser", [UserController::class, "listUser"]);
+    Route::get("/penjualan", [UserController::class, "listpenjualan"]);
     Route::get("/listbaker", [UserController::class, "listBaker"]);
     Route::get("/listkaryawan", [UserController::class, "listKaryawan"]);
     Route::match(['get', 'post'], "/registerakunbaker", [UserController::class, "registerakunbaker"])

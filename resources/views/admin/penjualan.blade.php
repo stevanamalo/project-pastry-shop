@@ -49,51 +49,62 @@
         @endif
 
         <div id="isi">
-        
             <center>
-            
-            
-            
-                <h2>List Karyawan </h2>
+                <br>
+                <h2>List penjualan</h2>
                 <br><br>
-            
-                <table class="table table-hover" style="width: 90%;">
+                <table class="table table-hover" style="width: 100%;">
                     <thead>
                       <tr>
-                        <th scope="col">username</th>
-                        <th scope="col">nama</th>
-                        <th scope="col">email</th>
-                        <th scope="col">tgl lahir</th>
-                        <th scope="col">Aksi</th>
+                        <th scope="col">nama pembeli</th>
+                        <th scope="col">nama pastry</th>
+                        <th scope="col">jumlah terjual</th>
                       </tr>
                     </thead>
                     <tbody>
-                    @if ($jumlah > 0)
-                                @foreach ($data as $user)
-                                    @if ($user->role === 'karyawan')
-                                        <tr>
-                                            <td>{{ $user->username }}</td>
-                                            <td>{{ $user->nama }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>{{ $user->tgllahir }}</td>
-                                            <td>
-                                                <a href="/admin/edituser/{{ $user->username }}">
-                                                    <button class="btn btn-success">Edit</button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="7"><center>Belum ada User</center></td>
-                                </tr>
-                    @endif
+                        @foreach ($penjualan as $penjualan)
+                        <tr>
+                            <form method="post" action="" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')   
+                                <input type="hidden" name="_method" value="PUT"> 
+                                <td><h6>{{ $penjualan->htrans_id }}</h6></td>
+                                <td><h6>{{ $penjualan->pastry_id }}</h6></td>
+                                <td><h6>{{ $penjualan->quantity }}</h6></td>
+                            </form>
+                        </tr>  
+                        @endforeach
                     </tbody>
                   </table>
             </center>
         </div>
     </div>
+    
 </body>
 @include('Template.footer')
 </html>
+
+
+
+
+{{-- <tbody>
+    @foreach ($pastries as $pastry)
+    <tr>
+        <form method="post" action="{{ url("/user/insertcart/{$pastry->id}") }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="_method" value="PUT">
+            <td>{{ $loop->index + 1 }}</td>
+            <td>
+                <h6>{{ $pastry->nama }}</h6>
+            </td>
+            <td>
+                <h6>Rp. {{ number_format($pastry->harga, 0, ',', '.') }},-</h6>
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-success">+Keranjang</button>
+            </td>
+        </form>
+    </tr>
+    @endforeach
+</tbody> --}}

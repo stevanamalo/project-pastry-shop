@@ -90,12 +90,12 @@
 <link href="assets/css/main.css" rel="stylesheet">
 
 </head>
-
+<header>
+  @include('template.navbar')
+</header>
+<br>
+<br>
 <body>
-@include('admin.navbarA')
-<br>
-<br>
-<br>
 <br>
 
   <div class="containerx">
