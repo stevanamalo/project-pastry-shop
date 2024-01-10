@@ -82,4 +82,6 @@ Route::prefix("/baker")->name("baker")->group(function(){
 
 Route::prefix("/karyawan")->group(function(){
     Route::get("/",[UserController::class, 'tampilhomekaryawan'] );
+    Route::get("/mastermenu", [UserController::class, "viewmastermenukaryawan"]);
+    Route::put("/updatePastrykaryawan/{id}", [UserController::class, 'updatePastrykaryawan'])->name('updatePastrykaryawan');
 });

@@ -15,10 +15,8 @@ class pastry extends Model
     public $timestamps = false;
     public $incrementing = false;
 
-    protected $fillable = [
-        'nama', 'harga', 'picturepastry', 'ingredients_id',
-    ];
-
+    protected $fillable = ['nama', 'harga', 'picturepastry', 'ingredients_id', 'Stok'];
+    
     public function ingredient()
     {
         return $this->belongsTo(Ingredients::class, 'ingredients_id');

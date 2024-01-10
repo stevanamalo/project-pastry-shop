@@ -345,6 +345,64 @@ class UserController extends Controller
         return view("admin.masterbaker");
     }
 
+    public function viewmastermenukaryawan()
+    {
+        $ingredients = Ingredients::all();
+        $suppliers = Supplier::all();
+        $pastry = Pastry::all();
+        return view('karyawan.mastermenu', ['suppliers' => $suppliers, 'ingredients' => $ingredients, 'pastries' => $pastry]);
+    }
+
+    public function updatePastrykaryawan(Request $request, $id)
+{
+    // Validate the request data
+    $request->validate([
+        'nama' => 'required|max:255',
+        'harga' => 'required|integer',
+        'ingredients_id' => 'required|exists:ingredients,id',
+        'new_picturepastry' => 'image|mimes:jpeg,jpg,gif,png|max:3072', // Max 3MB
+        'Stok' => 'required|integer', // Max 3MB
+    ]);
+
+    // Find the pastry
+    $pastry = Pastry::find($id);
+
+    if (!$pastry) {
+        return redirect()->back()->with('msg', 'Pastry not found.');
+    }
+
+    // Handle image upload
+    if ($request->hasFile('new_picturepastry')) {
+        // Delete the old image if it exists
+        if ($pastry->picturepastry) {
+            Storage::delete($pastry->picturepastry);
+        }
+
+        // Upload the new image
+        $newPicturePath = $request->file('new_picturepastry')->store('public/profile');
+        $newPicturePath = str_replace('public/', 'storage/', $newPicturePath);
+
+        // Update the pastry with the new image path
+        $pastry->update([
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'ingredients_id' => $request->ingredients_id,
+            'picturepastry' => $newPicturePath,
+            'Stok' => $request->Stok,
+        ]);
+    } else {
+        // Update the pastry details without changing the image
+        $pastry->update([
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'ingredients_id' => $request->ingredients_id,
+            'Stok' => $request->Stok,
+        ]);
+    }
+
+    return redirect()->back()->with('msg', 'Pastry updated successfully.');
+}
+
     public function viewmasterkaryawan()
     {
         return view("admin.masterkaryawan");
@@ -423,6 +481,7 @@ class UserController extends Controller
                 'harga' => $request->harga,
                 'picturepastry' => $picturePath,
                 'ingredients_id' => $request->ingredients_id,
+                'Stok' => 1,
             ]);
 
             // Retrieve the updated data

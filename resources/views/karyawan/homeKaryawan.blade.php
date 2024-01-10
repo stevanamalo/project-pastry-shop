@@ -52,7 +52,7 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a href="{{ url('/karyawan') }}">Home Karyawan</a></li>
-          <li><a href="{{ url('/baker/listmenu') }}">List Menu</a></li>
+          <li><a href="{{ url('/karyawan/mastermenu') }}">List Menu</a></li>
         </ul>
       </nav><!-- .navbar -->
 
