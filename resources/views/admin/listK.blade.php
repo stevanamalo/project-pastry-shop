@@ -55,6 +55,11 @@
         </style>
     <title>User Home</title> --}}
 </head>
+<header>
+    @include('template.navbar')
+</header>
+<br>
+<br>
 <body id="body" class="body fixed-center" style="width:auto">
     <br>
     <div class="container align-center justify-content-between">

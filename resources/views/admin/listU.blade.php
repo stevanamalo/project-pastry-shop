@@ -31,8 +31,12 @@
 
 </head>
 <br>
+<header>
+    @include('template.navbar')
+</header>
+<br>
+<br>
 <body>
-    @include('admin.navbarA')
     @if (Session::has('msg'))
 <div style="background-color: red; padding: 4px; color: white">
     <h3>
