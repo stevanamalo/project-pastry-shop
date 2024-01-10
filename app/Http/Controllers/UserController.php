@@ -73,6 +73,7 @@ class UserController extends Controller
                     "email" => $request->emailReg,
                     "password" => $request->password,
                     "tgllahir" => $request->tgllahir,
+                    "picture" => "default.png",
                     "saldo" => 0,
                     "role" => "user"
                 ]);
@@ -523,20 +524,25 @@ class UserController extends Controller
         }
 
 
-    public function insertSupplier(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
-            'nama' => 'required|unique:supplier,nama|max:255',
-        ]);
+        public function insertSupplier(Request $request)
+        {
+            // Validate the request data
+            $request->validate([
+                'nama' => 'required|unique:supplier,nama|max:255',
+                'notlp' => 'required| numeric',// Add this line for notlp validation
+                'address' => 'required|max:255',
+            ]);
 
-        // Create a new supplier
-        Supplier::create([
-            'nama' => $request->nama,
-        ]);
+            // Create a new supplier
+            Supplier::create([
+                'nama' => $request->nama,
+                'notlp' => $request->notlp,
+                'address' => $request->address,
+            ]);
 
-        return redirect()->route('baker')->with('msg', 'Supplier added successfully.');
-    }
+            return redirect()->route('baker')->with('msg', 'Supplier added successfully.');
+        }
+
 
     //TAMPILAN HALAMAN AKUN CUSTOMER ------------------------------------------------------------------------------------------------------------
     public function tampilHMembership()
@@ -695,24 +701,30 @@ class UserController extends Controller
 
 // Other controller functions...
 
-    public function updateSupplier(Request $request, $id)
-    {
-        $request->validate([
-            'nama' => 'required|max:255|unique:supplier,nama,' . $id,
+public function updateSupplier(Request $request, $id)
+{
+    $request->validate([
+        'nama' => 'required|max:255|unique:supplier,nama,' . $id,
+        'notlp' => 'required| numeric', // Updated Indonesian phone number regex
+        'address' => 'required|nullable|max:255',
+    ]);
+
+    $supplier = Supplier::find($id);
+
+    if ($supplier) {
+        $supplier->update([
+            'nama' => $request->nama,
+            'address' => $request->address,
+            'notlp' => $request->notlp,
         ]);
 
-        $supplier = Supplier::find($id);
-
-        if ($supplier) {
-            $supplier->update([
-                'nama' => $request->nama,
-            ]);
-
-            return redirect()->back()->with('msg', 'Supplier updated successfully.');
-        } else {
-            return redirect()->back()->with('msg', 'Supplier not found.');
-        }
+        return redirect()->back()->with('msg', 'Supplier updated successfully.');
+    } else {
+        return redirect()->back()->with('msg', 'Supplier not found.');
     }
+}
+
+
 
     public function deleteSupplier($id)
     {

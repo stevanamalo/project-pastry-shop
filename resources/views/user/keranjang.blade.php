@@ -22,33 +22,42 @@
 </head>
 <body>
     @include('user.navbarU')
-    list keranjang
-    <br>
-    <table id="tabel" border="0px">
-        <thead>
-            <th>No.</th>
-            <th>Nama Pastry</th>
-            <th>Harga</th>
-        </thead>
-        <tbody>
-            @foreach ($pastries as $pastry)
-            <tr>
-                <form method="post" action="{{ url("/user/insertcart/{$pastry->id}") }}" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" name="_method" value="PUT">
-                    <td>{{ $loop->index + 1 }}</td>
-                    <td><input type="text" value="{{ $pastry->nama }}" name="nama"></td>
-                    <td><input type="number" value="{{ $pastry->harga }}" name="harga"></td>
-                </form>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-<center>
-    <!-- Tampilkan informasi lain sesuai kebutuhan -->
+    <h2>list keranjang</h2>
 
-</center>
+    <br>
+    <center>
+        <table id="tabel" border="0px" class="table table-striped-columns" style="width:80%;">
+            <thead>
+                <th><h5> No.</h5></th>
+                <th><h5> Nama Pastry</h5></th>
+                <th><h5>Harga</h5></th>
+                <th><h5></h5></th>
+            </thead>
+            <tbody>
+                @foreach ($pastries as $pastry)
+                <tr>
+                    <form method="post" action="{{ url("/user/insertcart/{$pastry->id}") }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="_method" value="PUT">
+                        <td>{{ $loop->index + 1 }}</td>
+                        <td>
+                            <h6>{{ $pastry->nama }}</h6>
+                        </td>
+                        <td>
+                            <h6>
+                                {{ $pastry->harga }}
+                            </h6>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-success">+Keranjang</button>
+                        </td>
+                    </form>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </center>
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}

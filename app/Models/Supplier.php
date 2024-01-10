@@ -15,7 +15,7 @@ class Supplier extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'nama'
+        'nama', 'notlp', 'address'
     ];
 
     protected $dates = ['deleted_at'];
