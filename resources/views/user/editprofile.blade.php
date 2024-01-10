@@ -1,35 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-        <style>
-            body {
-              font-family: 'Trebuchet MS', sans-serif;
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-                height: 100vh;
-                background: linear-gradient(to bottom, black, gray);
-                color: white;
-                text-align: center;
+  <title>PASTRY SHOP</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-                flex-direction: column;
-                justify-content: center;
-            }
-        </style>
-    <title>User Home</title>
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Yummy
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 <body>
     @include('user.navbarUB')
-    <div id="container" >
+    <main id="main">
 
-        <center>
-            <br/>
-            <br/>
-
-            <br/>
-            <br/>
-            <h3>Edit profile</h3>
+        <!-- ======= About Section ======= -->
+        <section id="login" class="Login">
+          <div class="container" data-aos="fade-up">
+            <br>
+            <h3 style="color: #6D4404;">Edit profile</h3>
             @if (Session::has('msg'))
     <div style="background-color: red; padding: 4px; color: white">
         <h3>
@@ -43,54 +60,70 @@
 
         </center>
             <div id="formtambah">
-                <form  method="post" action={{url("/user/PUEditProfile")}} enctype="multipart/form-data">
+                <form  method="post" action={{url("/user/PUEditProfile")}} enctype="multipart/form-data" >
                     @csrf
-
-
-                <div>
-                    nama
+                <div style="width: 50%">
+                    Nama
                     <input type="text" class="form-control" name="nama" placeholder="nama" value="{{$data->nama }}">
-
                 </div>
-                <div>
-                    tgl lahir
+                <br>
+                <div style="width: 50%">
+                    Tanggal Lahir
                     <input type="date" class="form-control" name="tgllahir" placeholder="deskrispsi" value={{$data->tgllahir }}>
-
                 </div>
-                <div>
-                    old password
+                <br>
+                <div style="width: 50%">
+                    Old Password
                     <input type="password" class="form-control" name="oldpassword" placeholder="password Lama">
-
                 </div>
-                <div>
-                    new password
+                <br>
+                <div style="width: 50%">
+                    New Password
                     <input type="password" class="form-control" name="password" placeholder="password">
-
                 </div>
-                <div>
-                    password confirmation
+                <br>
+                <div style="width: 50%">
+                    Password Confirmation
                     <input type="password" class="form-control" name="password_confirmation" placeholder="password confirmation">
-
                 </div>
-                <div>
-                    profile picture
+                <br>
+                <div style="width: 50%">
+                    Profile Picture
                     <input type="file" class="form-control" name="profile_picture" placeholder="profile picture">
-
                 </div>
-                <br>
-                <br>
-                <br>
                 <br>
                 <br>
                 <center>
-                    <button  class="btn btn-danger" style="width: 100%;" name="BtnTambah" >Edit</button>
-                    <br>
-                    <br>
+                    <button  class="btn btn-success" style="width: 40%;" name="BtnTambah" >Edit</button>
                 </center>
                 <br>
                 </form>
-            </div>
+        </div>
+        </section><!-- End About Section -->
 
-    </div>
-</body>
-</html>
+      <!-- ======= Footer ======= -->
+      <br><br><br><br>
+      @include('user.footer')
+
+      <!-- End Footer -->
+
+      <a href="#" class="scroll-top d-flex align-items-center justify-content-center"style="background-color:#6D4404;"><i class="bi bi-arrow-up-short" ></i></a>
+
+      <div id="preloader"></div>
+
+      <!-- Vendor JS Files -->
+      <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+      <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+      <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+      <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+      <script src="{{ asset('assets/js/main.js') }}"></script>
+
+
+      <!-- Template Main JS File -->
+      <script src="assets/js/main.js"></script>
+
+    </body>
+
+    </html>
