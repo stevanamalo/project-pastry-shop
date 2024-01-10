@@ -50,7 +50,7 @@
                     <li><a href="{{ url('/admin/masterkaryawan') }}">Register Karyawan</a></li>
                 </ul>
               </li>
-              <li><a href="#">Penjualan</a></li>
+              <li><a href="{{ url('/admin/penjualan') }}">penjualan</a></li>
             </ul>
         </nav><!-- .navbar -->
 

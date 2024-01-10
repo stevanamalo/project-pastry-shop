@@ -80,7 +80,7 @@
                 <br>
                 <h2>List Baker </h2>
                 <br><br>
-                <table class="table table-hover" style="width: 120%;">
+                <table class="table table-hover" style="width: 100%;">
                     <thead>
                       <tr>
                         <th scope="col">username</th>
