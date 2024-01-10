@@ -46,45 +46,91 @@
         <section id="login" class="Login">
           <div class="container" data-aos="fade-up">
             <br>
-            <h2>List Menu</h2>
-            <br>
-            <center>
-                <table id="tabel" border="1px solid black" class="table table-striped-columns" style="width:80%;">
-                    <thead>
-                        <th><h5> No.</h5></th>
-                        <th><h5> Nama Pastry</h5></th>
-                        <th><h5>Harga</h5></th>
-                        <th><h5>Tambah Keranjang</h5></th>
-                    </thead>
-                    <tbody>
-                        @foreach ($pastries as $pastry)
-                        <tr>
-                            <form method="post" action="{{ url("/user/insertcart/{$pastry->id}") }}" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="_method" value="PUT">
-                                <td>{{ $loop->index + 1 }}</td>
-                                <td>
-                                    <h6>{{ $pastry->nama }}</h6>
-                                </td>
-                                <td>
-                                    <h6>Rp. {{ number_format($pastry->harga, 0, ',', '.') }},-</h6>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-success">+Keranjang</button>
-                                </td>
-                            </form>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <body>
+                        <h2>List Menu</h2>
+                        <br>
+                        <center>
+                            <table id="tabel" border="1px solid black" class="table table-striped-columns" style="width:80%;">
+                                <thead>
+                                    <th><h5> No.</h5></th>
+                                    <th><h5> Nama Pastry</h5></th>
+                                    <th><h5>Harga</h5></th>
+                                    <th><h5>Tambah Keranjang</h5></th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($pastries as $pastry)
+                                    <tr>
+                                        <form method="post" action="{{ url("/user/insertcart/{$pastry->id}") }}" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="_method" value="PUT">
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>
+                                                <h6>{{ $pastry->nama }}</h6>
+                                            </td>
+                                            <td>
+                                                <h6>Rp. {{ number_format($pastry->harga, 0, ',', '.') }},-</h6>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-success btn-tambah-keranjang" data-id="{{ $pastry->id }}">+Keranjang</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </center>
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
 
-            </center>
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
+                        <br>
+                        <h2>List Keranjang</h2>
+                        <br>
+                        <center>
+                            <table id="tabel-keranjang" border="1px solid black" class="table table-striped-columns" style="width:80%;">
+                                <thead>
+                                    <th><h5> No.</h5></th>
+                                    <th><h5> Nama Pastry</h5></th>
+                                    <th><h5> Stok Pembelian</h5></th>
+                                    <th><h5> Harga</h5></th>
+                                </thead>
+                                <tbody>
+                                    @php $totalHarga = 0; @endphp
+                                    @forelse ($keranjang as $index => $item)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>
+                                                <h6>{{ $item['nama'] }}</h6>
+                                            </td>
+                                            <td>
+                                                <h6>{{ $item['stok'] }}</h6>
+                                            </td>
+                                            <td>
+                                                <h6>Rp. {{ number_format($item['harga'], 0, ',', '.') }},-</h6>
+                                                @php $totalHarga += $item['harga']; @endphp
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4">No pastry selected</td>
+                                        </tr>
+                                    @endforelse
+                                    <tr>
+                                        <td colspan="3"><strong>Total Harga</strong></td>
+                                        <td><strong>Rp. {{ number_format($totalHarga, 0, ',', '.') }},-</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            @if(count($keranjang) > 0)
+                                <a href="{{ url("/user/checkout") }}" class="btn btn-primary">Checkout</a>
+                            @endif
+                        </center>
+                      </div>
+                    </section><!-- End About Section -->
         </section><!-- End About Section -->
 
         @include('user.footer')
@@ -105,7 +151,34 @@
 
       <!-- Template Main JS File -->
       <script src="assets/js/main.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script>
+          $(document).ready(function () {
+              // Menangani klik tombol "+Keranjang"
+              $(".btn-tambah-keranjang").on("click", function () {
+                  var pastryId = $(this).data("id");
 
+                  // Kirim AJAX request untuk menambahkan item ke keranjang
+                  $.ajax({
+                      type: "POST",
+                      url: "/user/insertcart",
+                      data: { pastry_id: pastryId, _token: "{{ csrf_token() }}" },
+                      success: function (response) {
+                          if (response.success) {
+                              alert("Item berhasil ditambahkan ke keranjang!");
+                              // Tambahan: Refresh halaman setelah menambahkan item ke keranjang
+                              location.reload();
+                          } else {
+                              alert("Gagal menambahkan item ke keranjang.");
+                          }
+                      },
+                      error: function () {
+                          alert("Terjadi kesalahan saat mengirim request.");
+                      }
+                  });
+              });
+          });
+      </script>
     </body>
 
     </html>

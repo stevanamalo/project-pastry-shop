@@ -5,22 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class cart extends Model
+class Cart extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'cart';
     protected $primaryKey = 'id';
-    public $timestamps = false;
-    public $incrementing = false;
-    
+    public $timestamps = false; // Sesuaikan dengan kebutuhan Anda
+    public $incrementing = true; // Sesuaikan dengan kebutuhan Anda
+
     protected $fillable = [
-        'nama',
+        'user_id', // Sesuaikan dengan nama kolom yang sesuai
+        'pastry_id',
+        'quantity',
     ];
-    
-    public function ingredient()
+
+    public function pastry()
     {
-        return $this->belongsTo(pastry::class, 'pastry_id');     
+        return $this->belongsTo(Pastry::class, 'pastry_id');
     }
-    
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

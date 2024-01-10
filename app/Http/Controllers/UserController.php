@@ -814,39 +814,89 @@ public function tampilmenu(){
 
 }
 
-
-
 public function insertcart(Request $request)
-{
-        // Validate the request data
+    {
+        // Validasi request
         $request->validate([
-            'nama' => 'required|exists:nama,id',
-            'pastry_id' => 'required|exists:pastry,nama',
+            'pastry_id' => 'required|exists:pastrys,id',
         ]);
 
-        // Create a new ingredient
-        cart::create([
-            'nama' => $request->nama,
-            'supplier_id' => $request->pastry_id,
-        ]);
+        // Periksa apakah user sedang login
+        if (auth()->check()) {
+            $user = auth()->user();
 
-        $pastries = pastry::all();
-        $user = User::all();
-        // Pass the data to the view
-        // return redirect()->back()->with('msg', 'Pastry Added successfully.');
-        return view('user.menu', ['pastries' => $pastries], ['user' => $user]);
+            // Periksa apakah item sudah ada dalam keranjang user
+            $cartItem = Cart::where('user_id', $user->id)
+                ->where('pastry_id', $request->pastry_id)
+                ->first();
 
-}
-public function tampilkeranjang(){
+            // Jika item sudah ada, tambahkan jumlahnya
+            if ($cartItem) {
+                $cartItem->quantity += 1;
+                $cartItem->save();
+            } else {
+                // Jika item belum ada, tambahkan item baru ke keranjang
+                Cart::create([
+                    'user_id' => $user->id,
+                    'pastry_id' => $request->pastry_id,
+                    'quantity' => 1,
+                ]);
+            }
+
+            // Berikan umpan balik bahwa item berhasil ditambahkan
+            return response()->json(['success' => true]);
+        }
+
+        // Berikan umpan balik jika user tidak login (bisa disesuaikan)
+        return response()->json(['success' => false, 'message' => 'User belum login']);
+    }
+
+public function tampilkeranjang()
+{
     if (!Session::has("userlog")) {
         return redirect()->route("login")->with('msg', "Harus Login Dahulu");
     }
+
     $username = Cookie::get('usernameyglogin');
     $user = User::where('username', $username)->first();
-
     $pastries = pastry::all();
-    // Pass the data to the view
-    return view('user.keranjang', ['pastries' => $pastries], ['user' => $user]);
+
+    // Variabel $keranjang harus disertakan sesuai kebutuhan aplikasi Anda
+    $keranjang = []; // Contoh array, gantilah dengan data sesuai kebutuhan
+
+    // Mengirimkan variabel $user dan $keranjang ke view 'user.keranjang'
+    return view('user.keranjang', ['pastries' => $pastries, 'user' => $user, 'keranjang' => $keranjang]);
 }
+
+public function showCart()
+{
+    $cart = session()->get('cart', []);
+
+    return view('user.keranjang', compact('cart')); // Ensure $cart is passed to the view
+}
+
+
+public function checkout()
+    {
+        // Mendapatkan data keranjang dari database
+        $keranjang = cart::all();
+
+        // Memeriksa apakah keranjang kosong
+        if ($keranjang->isEmpty()) {
+            return redirect()->route('user.keranjang')->with('error', 'Keranjang masih kosong.');
+        }
+
+        // Melakukan proses checkout
+        // Misalnya, mengurangi stok pastry, mencatat pesanan, menghitung total harga, dll.
+        // ...
+
+        // Mengosongkan keranjang setelah checkout
+        cart::truncate();
+
+        // Redirect ke halaman sukses atau halaman lainnya
+        return redirect()->route('user.keranjang')->with('success', 'Checkout berhasil. Terima kasih!');
+    }
+
+
 
 }

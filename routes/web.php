@@ -45,7 +45,6 @@ Route::prefix("/user")->group(function(){
     Route::get("/dashboard", [UserController::class, 'tampilhomeuser'] );
     Route::get("/menu", [UserController::class, 'tampilmenu'] );
     Route::get("/keranjang", [UserController::class, 'tampilkeranjang'] );
-    Route::post("/insertcart", [UserController::class, 'insertcart'] );
     Route::get("/profile", [UserController::class, 'tampilProfile'])->name("profile");
     Route::get("/HEditProfile", [UserController::class, 'HUEditProfile']);
     Route::post("/PUEditProfile",[UserController::class, "PUEditProfile"]);
@@ -54,6 +53,10 @@ Route::prefix("/user")->group(function(){
     Route::post("/topup", [UserController::class, "topup"]);
     Route::get("/mastermenu", [UserController::class, "viewmastermenu"]);
     Route::get("/topup", [UserController::class, "showTopupPage"])->name("topup");
+    Route::get("/checkout", [UserController::class, 'checkout'])->name('checkout');
+    Route::post("/insertcart", [UserController::class, 'insertcart'])->name("insertcart");
+
+
 });
 
 Route::prefix("/baker")->name("baker")->group(function(){
