@@ -358,11 +358,9 @@ class UserController extends Controller
 {
     // Validate the request data
     $request->validate([
-        'nama' => 'required|max:255',
         'harga' => 'required|integer',
-        'ingredients_id' => 'required|exists:ingredients,id',
         'new_picturepastry' => 'image|mimes:jpeg,jpg,gif,png|max:3072', // Max 3MB
-        'Stok' => 'required|integer', // Max 3MB
+        'Stok' => 'required|integer',
     ]);
 
     // Find the pastry
@@ -385,24 +383,22 @@ class UserController extends Controller
 
         // Update the pastry with the new image path
         $pastry->update([
-            'nama' => $request->nama,
             'harga' => $request->harga,
-            'ingredients_id' => $request->ingredients_id,
             'picturepastry' => $newPicturePath,
             'Stok' => $request->Stok,
         ]);
     } else {
         // Update the pastry details without changing the image
         $pastry->update([
-            'nama' => $request->nama,
             'harga' => $request->harga,
-            'ingredients_id' => $request->ingredients_id,
             'Stok' => $request->Stok,
         ]);
     }
 
     return redirect()->back()->with('msg', 'Pastry updated successfully.');
 }
+
+
 
     public function viewmasterkaryawan()
     {

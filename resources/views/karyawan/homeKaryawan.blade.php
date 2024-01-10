@@ -69,7 +69,9 @@
     <section id="login" class="Login">
       <div class="container" data-aos="fade-up">
 <br><br>
-        <h1>Welcome, Karyawan {{ $user->username }}!</h1>
+        <h1>Welcome, Karyawan
+            <h1 style="color: #6D4404;"> {{ $user->username }}!</h1>
+            </h1>
     <h4>klik navbar di atas untuk navigasi!</h4>
     @if (session('success'))
         <div class="alert alert-success">
