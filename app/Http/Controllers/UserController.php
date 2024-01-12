@@ -657,6 +657,25 @@ class UserController extends Controller
 
         // return redirect()->route("Hprofile")->with('msg', "Berhasil beli");
     }
+
+    public function membershipbuy()
+    {
+        if (!Session::has("userlog")) {
+            return redirect()->route("login")->with('msg', "Harus Login Dahulu");
+        }
+        $username = Cookie::get('usernameyglogin');
+        $user = User::where('username', $username)->first();
+
+        $harga = cookie::get('harga');
+        $harga = pastry::where('harga',$harga);
+
+        $membership = cookie::get('member');
+        $member = User::where('member',$membership);
+
+
+
+
+    }
     public function editIngredient($id)
     {
         $ingredient = Ingredients::find($id);

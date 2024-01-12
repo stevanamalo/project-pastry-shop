@@ -50,12 +50,12 @@
                         <h2>List Menu</h2>
                         <br>
                         <center>
-                            <table id="tabel" border="1px solid black" class="table table-striped-columns" style="width:80%;">
+                            <table id="tabel" border="1px solid black" class="table table-striped-columns" style="width:100%;">
                                 <thead>
-                                    <th><h5> No.</h5></th>
-                                    <th><h5> Nama Pastry</h5></th>
-                                    <th><h5>Harga</h5></th>
-                                    <th><h5>Tambah Keranjang</h5></th>
+                                    <th style="width:30px;"><center><h5><b>Picture</b> </h5></center></th>
+                                    <th><center><h5><b> Nama Pastry</b></h5></center></th>
+                                    <th><center><h5><b>Harga</b></h5></center></th>
+                                    <th style="width:10%;"><center><h5><b>Tambah Keranjang</b></h5></center></th>
                                 </thead>
                                 <tbody>
                                     @foreach ($pastries as $pastry)
@@ -64,12 +64,21 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="_method" value="PUT">
-                                            <td>{{ $loop->index + 1 }}</td>
-                                            <td>
-                                                <h6>{{ $pastry->nama }}</h6>
+                                            <td><center>
+                                                @if($pastry->picturepastry)
+                                                <img src="{{ asset($pastry->picturepastry) }}" alt="Pastry Image" style="width: 200px;">
+                                            @else
+                                                No Image
+                                            @endif
+                                            </center>
                                             </td>
-                                            <td>
+                                            <td><center>
+                                                <h6>{{ $pastry->nama }}</h6>
+                                            </center>
+                                            </td>
+                                            <td style="margin: auto;"> <center>
                                                 <h6>Rp. {{ number_format($pastry->harga, 0, ',', '.') }},-</h6>
+                                            </center>
                                             </td>
                                             <td>
                                                 <button class="btn btn-outline-success btn-tambah-keranjang" data-id="{{ $pastry->id }}">+Keranjang</button>
@@ -92,10 +101,10 @@
                         <center>
                             <table id="tabel-keranjang" border="1px solid black" class="table table-striped-columns" style="width:80%;">
                                 <thead>
-                                    <th><h5> No.</h5></th>
-                                    <th><h5> Nama Pastry</h5></th>
-                                    <th><h5> Stok Pembelian</h5></th>
-                                    <th><h5> Harga</h5></th>
+                                    <th> <center><h5> Picture</h5></center> </th>
+                                    <th><center><h5> Nama Pastry</h5></center></th>
+                                    <th><center><h5> Stok Pembelian</h5></center></th>
+                                    <th><center><h5> Harga</h5></center></th>
                                 </thead>
                                 <tbody>
                                     @php $totalHarga = 0; @endphp
